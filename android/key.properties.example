@@ -1,0 +1,6 @@
+storePassword=<キーストアのパスワード>
+keyPassword=<キーのパスワード>
+keyAlias=upload
+storeFile=<キーストアファイルへの絶対パス、例: /home/you/upload-keystore.jks>
+# Windowsの場合、バックスラッシュはJavaのプロパティファイルでエスケープ文字として解釈されるため、
+# フォワードスラッシュで書くこと(例: storeFile=C:/Users/you/upload-keystore.jks)
