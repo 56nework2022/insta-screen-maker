@@ -25,9 +25,25 @@ class PostGridScreen extends ConsumerWidget {
         ),
         itemCount: profile.postThumbnailPaths.length,
         itemBuilder: (context, index) {
-          return Image.file(File(profile.postThumbnailPaths[index]), fit: BoxFit.cover);
+          return Image.file(
+            File(profile.postThumbnailPaths[index]),
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => const _BrokenThumbnail(),
+          );
         },
       ),
+    );
+  }
+}
+
+class _BrokenThumbnail extends StatelessWidget {
+  const _BrokenThumbnail();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.grey.shade200,
+      child: Icon(Icons.broken_image, color: Colors.grey.shade500),
     );
   }
 }

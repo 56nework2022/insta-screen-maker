@@ -94,12 +94,19 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
               for (final path in profile.postThumbnailPaths)
                 Stack(
                   children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        image: DecorationImage(image: FileImage(File(path)), fit: BoxFit.cover),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        File(path),
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: 80,
+                          height: 80,
+                          color: Colors.grey.shade200,
+                          child: Icon(Icons.broken_image, color: Colors.grey.shade500),
+                        ),
                       ),
                     ),
                     Positioned(
