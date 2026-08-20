@@ -6,7 +6,7 @@ import '../../../core/widgets/user_avatar.dart';
 import '../../follow_list/screens/follower_list_screen.dart';
 import '../../follow_list/screens/following_list_screen.dart';
 import '../providers/profile_notifier.dart';
-import 'post_grid_screen.dart';
+import '../widgets/post_thumbnail_grid.dart';
 
 class ProfilePreviewScreen extends ConsumerWidget {
   const ProfilePreviewScreen({super.key, required this.profileId});
@@ -36,9 +36,6 @@ class ProfilePreviewScreen extends ConsumerWidget {
                     _StatColumn(
                       label: '投稿',
                       count: postCount,
-                      onTap: () => Navigator.of(context).push<void>(
-                        MaterialPageRoute(builder: (_) => PostGridScreen(profileId: profileId)),
-                      ),
                     ),
                     _StatColumn(
                       label: 'フォロワー',
@@ -62,6 +59,20 @@ class ProfilePreviewScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(profile.name, style: const TextStyle(fontWeight: FontWeight.bold)),
           if (profile.bio.isNotEmpty) Text(profile.bio),
+          const SizedBox(height: 16),
+          if (postCount == 0)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 32),
+              child: Center(
+                child: Text('まだ投稿がありません', style: TextStyle(color: AppColors.secondaryText)),
+              ),
+            )
+          else
+            PostThumbnailGrid(
+              paths: profile.postThumbnailPaths,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+            ),
         ],
       ),
     );
@@ -69,22 +80,25 @@ class ProfilePreviewScreen extends ConsumerWidget {
 }
 
 class _StatColumn extends StatelessWidget {
-  const _StatColumn({required this.label, required this.count, required this.onTap});
+  const _StatColumn({required this.label, required this.count, this.onTap});
 
   final String label;
   final int count;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Text('$count', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          Text(label, style: const TextStyle(color: AppColors.secondaryText, fontSize: 12)),
-        ],
-      ),
+    final content = Column(
+      children: [
+        Text('$count', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        Text(label, style: const TextStyle(color: AppColors.secondaryText, fontSize: 12)),
+      ],
     );
+
+    if (onTap == null) {
+      return content;
+    }
+
+    return GestureDetector(onTap: onTap, child: content);
   }
 }

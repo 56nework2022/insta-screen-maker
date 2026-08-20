@@ -51,5 +51,6 @@ void main() {
     expect(find.text('1'), findsOneWidget);
     expect(find.text('フォロワー'), findsOneWidget);
     expect(find.text('フォロー'), findsOneWidget);
+    expect(find.text('まだ投稿がありません'), findsOneWidget);
   });
 }
