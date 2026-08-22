@@ -24,8 +24,8 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       postThumbnailPaths: (fields[4] as List?)?.cast<String>(),
       followUsers: (fields[5] as List?)?.cast<FollowUser>(),
       postCount: fields[6] as int?,
-      followerCount: fields[7] as int?,
-      followingCount: fields[8] as int?,
+      followerCount: fields[7] as String?,
+      followingCount: fields[8] as String?,
     );
   }
 

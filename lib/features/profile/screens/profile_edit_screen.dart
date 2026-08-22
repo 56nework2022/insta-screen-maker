@@ -34,8 +34,8 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     _nameController = TextEditingController(text: profile.name);
     _bioController = TextEditingController(text: profile.bio);
     _postCountController = TextEditingController(text: profile.postCount.toString());
-    _followerCountController = TextEditingController(text: profile.followerCount.toString());
-    _followingCountController = TextEditingController(text: profile.followingCount.toString());
+    _followerCountController = TextEditingController(text: profile.followerCount);
+    _followingCountController = TextEditingController(text: profile.followingCount);
   }
 
   @override
@@ -153,8 +153,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           TextField(
             controller: _followerCountController,
             decoration: const InputDecoration(labelText: 'フォロワー数'),
-            keyboardType: TextInputType.number,
-            onChanged: (value) => notifier.updateFollowerCount(int.tryParse(value) ?? 0),
+            onChanged: notifier.updateFollowerCount,
           ),
           const SizedBox(height: 8),
           _FollowUserSection(
@@ -168,8 +167,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
           TextField(
             controller: _followingCountController,
             decoration: const InputDecoration(labelText: 'フォロー数'),
-            keyboardType: TextInputType.number,
-            onChanged: (value) => notifier.updateFollowingCount(int.tryParse(value) ?? 0),
+            onChanged: notifier.updateFollowingCount,
           ),
           const SizedBox(height: 8),
           _FollowUserSection(

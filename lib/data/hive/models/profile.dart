@@ -14,15 +14,15 @@ class Profile {
     List<String>? postThumbnailPaths,
     List<FollowUser>? followUsers,
     int? postCount,
-    int? followerCount,
-    int? followingCount,
+    String? followerCount,
+    String? followingCount,
   })  : postThumbnailPaths = postThumbnailPaths ?? const [],
         followUsers = followUsers ?? const [],
         postCount = postCount ?? (postThumbnailPaths?.length ?? 0),
-        followerCount =
-            followerCount ?? (followUsers?.where((u) => u.listType == 'follower').length ?? 0),
-        followingCount =
-            followingCount ?? (followUsers?.where((u) => u.listType == 'following').length ?? 0);
+        followerCount = followerCount ??
+            (followUsers?.where((u) => u.listType == 'follower').length ?? 0).toString(),
+        followingCount = followingCount ??
+            (followUsers?.where((u) => u.listType == 'following').length ?? 0).toString();
 
   @HiveField(0)
   final String id;
@@ -46,10 +46,10 @@ class Profile {
   final int postCount;
 
   @HiveField(7)
-  final int followerCount;
+  final String followerCount;
 
   @HiveField(8)
-  final int followingCount;
+  final String followingCount;
 
   Profile copyWith({
     String? name,
@@ -58,8 +58,8 @@ class Profile {
     List<String>? postThumbnailPaths,
     List<FollowUser>? followUsers,
     int? postCount,
-    int? followerCount,
-    int? followingCount,
+    String? followerCount,
+    String? followingCount,
   }) {
     return Profile(
       id: id,

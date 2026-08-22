@@ -37,7 +37,7 @@ class ProfilePreviewScreen extends ConsumerWidget {
                     children: [
                       _StatColumn(
                         label: '投稿',
-                        count: profile.postCount,
+                        count: profile.postCount.toString(),
                       ),
                       _StatColumn(
                         label: 'フォロワー',
@@ -93,14 +93,14 @@ class _StatColumn extends StatelessWidget {
   const _StatColumn({required this.label, required this.count, this.onTap});
 
   final String label;
-  final int count;
+  final String count;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final content = Column(
       children: [
-        Text('$count', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        Text(count, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         Text(label, style: const TextStyle(color: AppColors.secondaryText, fontSize: 12)),
       ],
     );
