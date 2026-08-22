@@ -24,8 +24,8 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       postThumbnailPaths: (fields[4] as List?)?.cast<String>(),
       followUsers: (fields[5] as List?)?.cast<FollowUser>(),
       postCount: fields[6] as int?,
-      followerCount: fields[7] as String?,
-      followingCount: fields[8] as String?,
+      followerCount: fields[9] as String?,
+      followingCount: fields[10] as String?,
     );
   }
 
@@ -47,9 +47,9 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       ..write(obj.followUsers)
       ..writeByte(6)
       ..write(obj.postCount)
-      ..writeByte(7)
+      ..writeByte(9)
       ..write(obj.followerCount)
-      ..writeByte(8)
+      ..writeByte(10)
       ..write(obj.followingCount);
   }
 

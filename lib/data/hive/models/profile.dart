@@ -45,10 +45,11 @@ class Profile {
   @HiveField(6)
   final int postCount;
 
-  @HiveField(7)
+  // 注意: 7, 8はversionCode 5でint型として使用済みのため欠番とし、再利用しない。
+  @HiveField(9)
   final String followerCount;
 
-  @HiveField(8)
+  @HiveField(10)
   final String followingCount;
 
   Profile copyWith({
