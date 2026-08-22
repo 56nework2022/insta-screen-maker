@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/widgets/confirm_delete_dialog.dart';
 import '../../../core/widgets/image_picker_field.dart';
 import '../../../core/widgets/named_avatar_tile.dart';
 import '../../../data/hive/models/follow_user.dart';
@@ -206,7 +207,16 @@ class _FollowUserSection extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(icon: const Icon(Icons.edit, size: 18), onPressed: () => onEdit(user)),
-                IconButton(icon: const Icon(Icons.delete_outline, size: 18), onPressed: () => onDelete(user)),
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, size: 18),
+                  onPressed: () async {
+                    final confirmed = await confirmDelete(
+                      context,
+                      message: '「${user.name}」を削除しますか?',
+                    );
+                    if (confirmed) onDelete(user);
+                  },
+                ),
               ],
             ),
           ),

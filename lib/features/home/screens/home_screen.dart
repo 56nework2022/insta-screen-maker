@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/widgets/confirm_delete_dialog.dart';
 import '../../../data/hive/models/feed.dart';
 import '../../../data/hive/models/post.dart';
 import '../../../data/hive/models/profile.dart';
@@ -156,7 +157,13 @@ class _HomeSection<T> extends StatelessWidget {
               onTap: () => onTapItem(item),
               trailing: IconButton(
                 icon: const Icon(Icons.delete_outline),
-                onPressed: () => onDeleteItem(item),
+                onPressed: () async {
+                  final confirmed = await confirmDelete(
+                    context,
+                    message: '「${itemLabel(item)}」を削除しますか?',
+                  );
+                  if (confirmed) onDeleteItem(item);
+                },
               ),
             ),
         const Divider(height: 24),

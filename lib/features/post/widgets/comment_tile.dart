@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/widgets/confirm_delete_dialog.dart';
 import '../../../core/widgets/user_avatar.dart';
 import '../../../data/hive/models/comment.dart';
 
@@ -39,7 +40,16 @@ class CommentTile extends StatelessWidget {
                 if (onEdit != null)
                   IconButton(icon: const Icon(Icons.edit, size: 18), onPressed: onEdit),
                 if (onDelete != null)
-                  IconButton(icon: const Icon(Icons.delete_outline, size: 18), onPressed: onDelete),
+                  IconButton(
+                    icon: const Icon(Icons.delete_outline, size: 18),
+                    onPressed: () async {
+                      final confirmed = await confirmDelete(
+                        context,
+                        message: 'このコメントを削除しますか?',
+                      );
+                      if (confirmed) onDelete!();
+                    },
+                  ),
               ],
             ),
     );

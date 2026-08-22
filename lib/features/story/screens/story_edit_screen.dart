@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/widgets/confirm_delete_dialog.dart';
 import '../../../core/widgets/image_picker_field.dart';
 import '../providers/story_notifier.dart';
 import 'story_preview_screen.dart';
@@ -87,7 +88,13 @@ class _StoryEditScreenState extends ConsumerState<StoryEditScreen> {
                   leading: Image.file(File(image.imagePath), width: 48, height: 48, fit: BoxFit.cover),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete_outline),
-                    onPressed: () => notifier.removeImage(image.id),
+                    onPressed: () async {
+                      final confirmed = await confirmDelete(
+                        context,
+                        message: 'この画像を削除しますか?',
+                      );
+                      if (confirmed) notifier.removeImage(image.id);
+                    },
                   ),
                 ),
             ],
