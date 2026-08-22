@@ -17,8 +17,8 @@ class ProfilePreviewScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileNotifierProvider(profileId));
     final thumbnailCount = profile.postThumbnailPaths.length;
-    final followerCount = profile.followUsers.where((u) => u.listType == 'follower').length;
-    final followingCount = profile.followUsers.where((u) => u.listType == 'following').length;
+    final followerCount = profile.followerCount;
+    final followingCount = profile.followingCount;
 
     return Scaffold(
       appBar: AppBar(title: Text(profile.name)),

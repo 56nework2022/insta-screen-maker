@@ -24,13 +24,15 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       postThumbnailPaths: (fields[4] as List?)?.cast<String>(),
       followUsers: (fields[5] as List?)?.cast<FollowUser>(),
       postCount: fields[6] as int?,
+      followerCount: fields[7] as int?,
+      followingCount: fields[8] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Profile obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +46,11 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       ..writeByte(5)
       ..write(obj.followUsers)
       ..writeByte(6)
-      ..write(obj.postCount);
+      ..write(obj.postCount)
+      ..writeByte(7)
+      ..write(obj.followerCount)
+      ..writeByte(8)
+      ..write(obj.followingCount);
   }
 
   @override

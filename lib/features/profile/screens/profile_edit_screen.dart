@@ -24,6 +24,8 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _bioController;
   late final TextEditingController _postCountController;
+  late final TextEditingController _followerCountController;
+  late final TextEditingController _followingCountController;
 
   @override
   void initState() {
@@ -32,6 +34,8 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     _nameController = TextEditingController(text: profile.name);
     _bioController = TextEditingController(text: profile.bio);
     _postCountController = TextEditingController(text: profile.postCount.toString());
+    _followerCountController = TextEditingController(text: profile.followerCount.toString());
+    _followingCountController = TextEditingController(text: profile.followingCount.toString());
   }
 
   @override
@@ -39,6 +43,8 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     _nameController.dispose();
     _bioController.dispose();
     _postCountController.dispose();
+    _followerCountController.dispose();
+    _followingCountController.dispose();
     super.dispose();
   }
 
@@ -144,6 +150,13 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             ],
           ),
           const SizedBox(height: 24),
+          TextField(
+            controller: _followerCountController,
+            decoration: const InputDecoration(labelText: 'フォロワー数'),
+            keyboardType: TextInputType.number,
+            onChanged: (value) => notifier.updateFollowerCount(int.tryParse(value) ?? 0),
+          ),
+          const SizedBox(height: 8),
           _FollowUserSection(
             title: 'フォロワー',
             users: followers,
@@ -151,7 +164,14 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             onEdit: (user) => _showFollowUserDialog(notifier, listType: 'follower', initial: user),
             onDelete: (user) => notifier.deleteFollowUser(user.id),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
+          TextField(
+            controller: _followingCountController,
+            decoration: const InputDecoration(labelText: 'フォロー数'),
+            keyboardType: TextInputType.number,
+            onChanged: (value) => notifier.updateFollowingCount(int.tryParse(value) ?? 0),
+          ),
+          const SizedBox(height: 8),
           _FollowUserSection(
             title: 'フォロー',
             users: following,
