@@ -29,10 +29,10 @@
 - [x] ユーザーが `android/key.properties` を作成(実パスワードを記入、コミットしない)
 - [x] ユーザーが `flutter build appbundle --release` を実行し、署名済みAABが生成されることを確認(2026-08-16、`app-release.aab` 46.8MB 生成成功。Windows特有の `Malformed \uxxxx encoding` エラーが発生したが、`storeFile`をフォワードスラッシュ表記に修正して解決)
 - [x] プライバシーポリシーページを公開(2026-08-16、`docs/privacy-policy.md` 作成・コミット。`claude-lineapp`/`claude-postapp` と同じ運用パターンを踏襲し、リポジトリをPrivate→Publicに変更、GitHub Pagesを`main`ブランチ`/docs`ソースで有効化。公開URL: https://56nework2022.github.io/insta-screen-maker/privacy-policy.html 、表示確認済み)
-- [ ] ユーザーがGoogle Play Consoleでアプリを新規作成し、ストア掲載情報・データセーフティ等の必須項目(プライバシーポリシーURLを含む)を入力
-- [ ] ユーザーがGoogle Play Consoleの内部テストトラックにAABをアップロード
-- [ ] ユーザーが内部テスターを登録し、テスト用リンクを取得
-- [ ] テスターが内部テスト版アプリをインストールし、動作確認できることを確認
+- [x] ユーザーがGoogle Play Consoleでアプリを新規作成し、ストア掲載情報・データセーフティ等の必須項目(プライバシーポリシーURLを含む)を入力
+- [x] ユーザーがGoogle Play Consoleの内部テストトラックにAABをアップロード(versionCode 1, 2は使用済みエラーのため`1.0.0+3`(commit `05ccdab`)で成功)
+- [x] ユーザーが内部テスターを登録し、テスト用リンクを取得
+- [x] テスターが内部テスト版アプリをインストールし、動作確認できることを確認(2026-08-20 実機確認OK)
 
 ## 完了条件
 
