@@ -23,6 +23,8 @@ class ProfileNotifier extends FamilyNotifier<Profile, String> {
 
   void updateBio(String bio) => _update(state.copyWith(bio: bio));
 
+  void updatePostCount(int postCount) => _update(state.copyWith(postCount: postCount));
+
   void addPostThumbnail(String imagePath) {
     _update(state.copyWith(postThumbnailPaths: [...state.postThumbnailPaths, imagePath]));
   }

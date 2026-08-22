@@ -23,6 +23,7 @@ class ProfileEditScreen extends ConsumerStatefulWidget {
 class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _bioController;
+  late final TextEditingController _postCountController;
 
   @override
   void initState() {
@@ -30,12 +31,14 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     final profile = ref.read(profileNotifierProvider(widget.profileId));
     _nameController = TextEditingController(text: profile.name);
     _bioController = TextEditingController(text: profile.bio);
+    _postCountController = TextEditingController(text: profile.postCount.toString());
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _bioController.dispose();
+    _postCountController.dispose();
     super.dispose();
   }
 
@@ -84,6 +87,13 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             decoration: const InputDecoration(labelText: '自己紹介'),
             maxLines: 3,
             onChanged: notifier.updateBio,
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _postCountController,
+            decoration: const InputDecoration(labelText: '投稿数'),
+            keyboardType: TextInputType.number,
+            onChanged: (value) => notifier.updatePostCount(int.tryParse(value) ?? 0),
           ),
           const SizedBox(height: 24),
           const Text('投稿サムネイル', style: TextStyle(fontWeight: FontWeight.bold)),

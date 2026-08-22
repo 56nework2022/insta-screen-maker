@@ -13,8 +13,10 @@ class Profile {
     required this.bio,
     List<String>? postThumbnailPaths,
     List<FollowUser>? followUsers,
+    int? postCount,
   })  : postThumbnailPaths = postThumbnailPaths ?? const [],
-        followUsers = followUsers ?? const [];
+        followUsers = followUsers ?? const [],
+        postCount = postCount ?? (postThumbnailPaths?.length ?? 0);
 
   @HiveField(0)
   final String id;
@@ -34,12 +36,16 @@ class Profile {
   @HiveField(5)
   final List<FollowUser> followUsers;
 
+  @HiveField(6)
+  final int postCount;
+
   Profile copyWith({
     String? name,
     String? iconPath,
     String? bio,
     List<String>? postThumbnailPaths,
     List<FollowUser>? followUsers,
+    int? postCount,
   }) {
     return Profile(
       id: id,
@@ -48,6 +54,7 @@ class Profile {
       bio: bio ?? this.bio,
       postThumbnailPaths: postThumbnailPaths ?? this.postThumbnailPaths,
       followUsers: followUsers ?? this.followUsers,
+      postCount: postCount ?? this.postCount,
     );
   }
 }

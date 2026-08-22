@@ -8,11 +8,13 @@ class PostThumbnailGrid extends StatelessWidget {
     required this.paths,
     this.shrinkWrap = false,
     this.physics,
+    this.childAspectRatio = 1,
   });
 
   final List<String> paths;
   final bool shrinkWrap;
   final ScrollPhysics? physics;
+  final double childAspectRatio;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +22,11 @@ class PostThumbnailGrid extends StatelessWidget {
       padding: const EdgeInsets.all(2),
       shrinkWrap: shrinkWrap,
       physics: physics,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         crossAxisSpacing: 2,
         mainAxisSpacing: 2,
+        childAspectRatio: childAspectRatio,
       ),
       itemCount: paths.length,
       itemBuilder: (context, index) {
