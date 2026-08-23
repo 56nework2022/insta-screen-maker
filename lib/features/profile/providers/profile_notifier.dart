@@ -59,6 +59,22 @@ class ProfileNotifier extends FamilyNotifier<Profile, String> {
     final followUsers = state.followUsers.where((u) => u.id != id).toList();
     _update(state.copyWith(followUsers: followUsers));
   }
+
+  /// [oldIndex]/[newIndex]は`ReorderableListView.onReorder`の仕様に合わせる。
+  /// followUsersはフォロワー/フォローが1本のリストに混在しているため、
+  /// [listType]で絞り込んだ範囲内で並べ替えてから元の位置に戻す。
+  void reorderFollowUser(String listType, int oldIndex, int newIndex) {
+    final targetIndex = oldIndex < newIndex ? newIndex - 1 : newIndex;
+    final filtered = state.followUsers.where((u) => u.listType == listType).toList();
+    final moved = filtered.removeAt(oldIndex);
+    filtered.insert(targetIndex, moved);
+
+    var i = 0;
+    final followUsers = [
+      for (final u in state.followUsers) u.listType == listType ? filtered[i++] : u,
+    ];
+    _update(state.copyWith(followUsers: followUsers));
+  }
 }
 
 final profileNotifierProvider = NotifierProvider.family<ProfileNotifier, Profile, String>(

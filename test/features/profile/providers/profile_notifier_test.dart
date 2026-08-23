@@ -60,6 +60,25 @@ void main() {
     expect(updated.followUsers.first.name, 'b');
   });
 
+  test('reorderFollowUserはlistType内のみ並べ替え、他方の順序は保つ', () {
+    seedProfile();
+    final notifier = container.read(profileNotifierProvider('profile-1').notifier);
+    notifier.addFollowUser(listType: 'follower', name: 'a', iconPath: '');
+    notifier.addFollowUser(listType: 'following', name: 'x', iconPath: '');
+    notifier.addFollowUser(listType: 'follower', name: 'b', iconPath: '');
+    notifier.addFollowUser(listType: 'follower', name: 'c', iconPath: '');
+
+    notifier.reorderFollowUser('follower', 0, 3);
+
+    final updated = container.read(profileNotifierProvider('profile-1'));
+    expect(updated.followUsers.where((u) => u.listType == 'follower').map((u) => u.name), ['b', 'c', 'a']);
+    expect(updated.followUsers.where((u) => u.listType == 'following').map((u) => u.name), ['x']);
+    expect(
+      Hive.box<Profile>(HiveBoxes.profileBoxName).get('profile-1')!.followUsers.map((u) => u.name),
+      updated.followUsers.map((u) => u.name),
+    );
+  });
+
   test('addPostThumbnail/removePostThumbnailはサムネイル一覧を更新する', () {
     seedProfile();
     final notifier = container.read(profileNotifierProvider('profile-1').notifier);

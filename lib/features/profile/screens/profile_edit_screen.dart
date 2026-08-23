@@ -162,6 +162,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             onAdd: () => _showFollowUserDialog(notifier, listType: 'follower'),
             onEdit: (user) => _showFollowUserDialog(notifier, listType: 'follower', initial: user),
             onDelete: (user) => notifier.deleteFollowUser(user.id),
+            onReorder: (oldIndex, newIndex) => notifier.reorderFollowUser('follower', oldIndex, newIndex),
           ),
           const SizedBox(height: 24),
           TextField(
@@ -176,6 +177,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             onAdd: () => _showFollowUserDialog(notifier, listType: 'following'),
             onEdit: (user) => _showFollowUserDialog(notifier, listType: 'following', initial: user),
             onDelete: (user) => notifier.deleteFollowUser(user.id),
+            onReorder: (oldIndex, newIndex) => notifier.reorderFollowUser('following', oldIndex, newIndex),
           ),
         ],
       ),
@@ -207,6 +209,7 @@ class _FollowUserSection extends StatelessWidget {
     required this.onAdd,
     required this.onEdit,
     required this.onDelete,
+    required this.onReorder,
   });
 
   final String title;
@@ -214,6 +217,7 @@ class _FollowUserSection extends StatelessWidget {
   final VoidCallback onAdd;
   final ValueChanged<FollowUser> onEdit;
   final ValueChanged<FollowUser> onDelete;
+  final void Function(int oldIndex, int newIndex) onReorder;
 
   @override
   Widget build(BuildContext context) {
@@ -227,27 +231,36 @@ class _FollowUserSection extends StatelessWidget {
             IconButton(icon: const Icon(Icons.add), onPressed: onAdd),
           ],
         ),
-        for (final user in users)
-          NamedAvatarTile(
-            name: user.name,
-            iconPath: user.iconPath,
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(icon: const Icon(Icons.edit, size: 18), onPressed: () => onEdit(user)),
-                IconButton(
-                  icon: const Icon(Icons.delete_outline, size: 18),
-                  onPressed: () async {
-                    final confirmed = await confirmDelete(
-                      context,
-                      message: '「${user.name}」を削除しますか?',
-                    );
-                    if (confirmed) onDelete(user);
-                  },
+        ReorderableListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          onReorder: onReorder,
+          children: [
+            for (final user in users)
+              NamedAvatarTile(
+                key: ValueKey(user.id),
+                name: user.name,
+                iconPath: user.iconPath,
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(icon: const Icon(Icons.edit, size: 18), onPressed: () => onEdit(user)),
+                    IconButton(
+                      icon: const Icon(Icons.delete_outline, size: 18),
+                      onPressed: () async {
+                        final confirmed = await confirmDelete(
+                          context,
+                          message: '「${user.name}」を削除しますか?',
+                        );
+                        if (confirmed) onDelete(user);
+                      },
+                    ),
+                    const Icon(Icons.drag_handle, size: 18),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+          ],
+        ),
       ],
     );
   }
