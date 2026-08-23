@@ -18,7 +18,14 @@ class FollowingListScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text('フォロー中')),
       body: ListView(
         children: [
-          for (final user in following) NamedAvatarTile(name: user.name, iconPath: user.iconPath),
+          for (final user in following)
+            NamedAvatarTile(
+              name: user.name,
+              iconPath: user.iconPath,
+              avatarRadius: 32,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              titleStyle: const TextStyle(fontSize: 18),
+            ),
         ],
       ),
     );

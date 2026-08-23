@@ -10,19 +10,26 @@ class NamedAvatarTile extends StatelessWidget {
     required this.iconPath,
     this.onTap,
     this.trailing,
+    this.avatarRadius = 20,
+    this.contentPadding,
+    this.titleStyle,
   });
 
   final String name;
   final String iconPath;
   final VoidCallback? onTap;
   final Widget? trailing;
+  final double avatarRadius;
+  final EdgeInsetsGeometry? contentPadding;
+  final TextStyle? titleStyle;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      leading: UserAvatar(iconPath: iconPath, radius: 20),
-      title: Text(name),
+      contentPadding: contentPadding,
+      leading: UserAvatar(iconPath: iconPath, radius: avatarRadius),
+      title: Text(name, style: titleStyle),
       trailing: trailing,
     );
   }
