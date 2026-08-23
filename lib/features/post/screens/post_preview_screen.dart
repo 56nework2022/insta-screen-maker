@@ -35,7 +35,7 @@ class _PostPreviewScreenState extends ConsumerState<PostPreviewScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        titleSpacing: 0,
+        titleSpacing: 8,
         title: Row(
           children: [
             UserAvatar(iconPath: post.userIconPath, radius: 14),
