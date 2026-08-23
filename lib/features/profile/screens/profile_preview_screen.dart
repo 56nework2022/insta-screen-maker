@@ -21,68 +21,93 @@ class ProfilePreviewScreen extends ConsumerWidget {
     final followingCount = profile.followingCount;
 
     return Scaffold(
-      appBar: AppBar(title: Text(profile.name)),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                UserAvatar(iconPath: profile.iconPath, radius: 40),
-                const SizedBox(width: 24),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _StatColumn(
-                        label: '投稿',
-                        count: profile.postCount.toString(),
-                      ),
-                      _StatColumn(
-                        label: 'フォロワー',
-                        count: followerCount,
-                        onTap: () => Navigator.of(context).push<void>(
-                          MaterialPageRoute(builder: (_) => FollowerListScreen(profileId: profileId)),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(profile.name),
+      ),
+      body: GestureDetector(
+        onHorizontalDragEnd: (details) {
+          if ((details.primaryVelocity ?? 0) > 300) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  UserAvatar(iconPath: profile.iconPath, radius: 40),
+                  const SizedBox(width: 24),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _StatColumn(
+                          label: '投稿',
+                          count: profile.postCount.toString(),
                         ),
-                      ),
-                      _StatColumn(
-                        label: 'フォロー',
-                        count: followingCount,
-                        onTap: () => Navigator.of(context).push<void>(
-                          MaterialPageRoute(builder: (_) => FollowingListScreen(profileId: profileId)),
+                        _StatColumn(
+                          label: 'フォロワー',
+                          count: followerCount,
+                          onTap: () => Navigator.of(context).push<void>(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  FollowerListScreen(profileId: profileId),
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Text(profile.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-            if (profile.bio.isNotEmpty) Text(profile.bio),
-            const SizedBox(height: 16),
-            Expanded(
-              child: thumbnailCount == 0
-                  ? const Center(
-                      child: Text('まだ投稿がありません', style: TextStyle(color: AppColors.secondaryText)),
-                    )
-                  : LayoutBuilder(
-                      builder: (context, constraints) {
-                        // 3行×3列(9枚)でグリッド領域がちょうど埋まるようセル比率を算出する。
-                        const rows = 3;
-                        const spacing = 2.0;
-                        final cellHeight =
-                            ((constraints.maxHeight - spacing * (rows - 1)) / rows).clamp(20.0, double.infinity);
-                        final cellWidth = (constraints.maxWidth - spacing * 2) / 3;
-                        return PostThumbnailGrid(
-                          paths: profile.postThumbnailPaths,
-                          childAspectRatio: cellWidth / cellHeight,
-                        );
-                      },
+                        _StatColumn(
+                          label: 'フォロー',
+                          count: followingCount,
+                          onTap: () => Navigator.of(context).push<void>(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  FollowingListScreen(profileId: profileId),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-            ),
-          ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                profile.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              if (profile.bio.isNotEmpty) Text(profile.bio),
+              const SizedBox(height: 16),
+              Expanded(
+                child: thumbnailCount == 0
+                    ? const Center(
+                        child: Text(
+                          'まだ投稿がありません',
+                          style: TextStyle(color: AppColors.secondaryText),
+                        ),
+                      )
+                    : LayoutBuilder(
+                        builder: (context, constraints) {
+                          // 3行×3列(9枚)でグリッド領域がちょうど埋まるようセル比率を算出する。
+                          const rows = 3;
+                          const spacing = 2.0;
+                          final cellHeight =
+                              ((constraints.maxHeight - spacing * (rows - 1)) /
+                                      rows)
+                                  .clamp(20.0, double.infinity);
+                          final cellWidth =
+                              (constraints.maxWidth - spacing * 2) / 3;
+                          return PostThumbnailGrid(
+                            paths: profile.postThumbnailPaths,
+                            childAspectRatio: cellWidth / cellHeight,
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -100,8 +125,14 @@ class _StatColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final content = Column(
       children: [
-        Text(count, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        Text(label, style: const TextStyle(color: AppColors.secondaryText, fontSize: 12)),
+        Text(
+          count,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        Text(
+          label,
+          style: const TextStyle(color: AppColors.secondaryText, fontSize: 12),
+        ),
       ],
     );
 

@@ -34,107 +34,127 @@ class _PostPreviewScreenState extends ConsumerState<PostPreviewScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(),
+        automaticallyImplyLeading: false,
         titleSpacing: 0,
         title: Row(
           children: [
             UserAvatar(iconPath: post.userIconPath, radius: 14),
             const SizedBox(width: 8),
-            Text(post.userName, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+            Text(
+              post.userName,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            ),
           ],
         ),
         actions: const [Icon(Icons.more_vert), SizedBox(width: 12)],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: [
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: post.imagePath.isEmpty
-                      ? Container(color: Colors.grey.shade200)
-                      : Image.file(File(post.imagePath), fit: BoxFit.cover),
-                ),
-                Row(
-                  children: [
-                    LikeButton(isLiked: post.isLiked, onTap: notifier.toggleLike),
-                    const Icon(Icons.mode_comment_outlined),
-                    const SizedBox(width: 16),
-                    const Icon(Icons.send_outlined),
-                    const Spacer(),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 12),
-                      child: Icon(Icons.bookmark_border),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    '${post.likeCount} 件のいいね',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${post.userName}  ',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(text: post.caption),
-                      ],
-                    ),
-                  ),
-                ),
-                for (final comment in post.comments) CommentTile(comment: comment),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-                  child: Text(
-                    post.postedAtLabel,
-                    style: const TextStyle(color: AppColors.secondaryText, fontSize: 12),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
+      body: GestureDetector(
+        onHorizontalDragEnd: (details) {
+          if ((details.primaryVelocity ?? 0) > 300) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
                 children: [
-                  UserAvatar(iconPath: post.userIconPath, radius: 14),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _commentController,
-                      decoration: const InputDecoration(
-                        hintText: 'コメントを追加...',
-                        border: InputBorder.none,
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: post.imagePath.isEmpty
+                        ? Container(color: Colors.grey.shade200)
+                        : Image.file(File(post.imagePath), fit: BoxFit.cover),
+                  ),
+                  Row(
+                    children: [
+                      LikeButton(
+                        isLiked: post.isLiked,
+                        onTap: notifier.toggleLike,
+                      ),
+                      const Icon(Icons.mode_comment_outlined),
+                      const SizedBox(width: 16),
+                      const Icon(Icons.send_outlined),
+                      const Spacer(),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 12),
+                        child: Icon(Icons.bookmark_border),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      '${post.likeCount} 件のいいね',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${post.userName}  ',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(text: post.caption),
+                        ],
                       ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      final body = _commentController.text.trim();
-                      if (body.isEmpty) return;
-                      notifier.addComment(
-                        userName: post.userName,
-                        userIconPath: post.userIconPath,
-                        body: body,
-                      );
-                      _commentController.clear();
-                    },
-                    child: const Text('投稿'),
+                  for (final comment in post.comments)
+                    CommentTile(comment: comment),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+                    child: Text(
+                      post.postedAtLabel,
+                      style: const TextStyle(
+                        color: AppColors.secondaryText,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                child: Row(
+                  children: [
+                    UserAvatar(iconPath: post.userIconPath, radius: 14),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        controller: _commentController,
+                        decoration: const InputDecoration(
+                          hintText: 'コメントを追加...',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        final body = _commentController.text.trim();
+                        if (body.isEmpty) return;
+                        notifier.addComment(
+                          userName: post.userName,
+                          userIconPath: post.userIconPath,
+                          body: body,
+                        );
+                        _commentController.clear();
+                      },
+                      child: const Text('投稿'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

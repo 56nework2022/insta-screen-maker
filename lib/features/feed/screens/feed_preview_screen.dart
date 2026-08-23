@@ -25,35 +25,46 @@ class FeedPreviewScreen extends ConsumerWidget {
     final allStoryGroups = ref.watch(storyListProvider);
 
     final visiblePosts = FeedResolver.resolvePosts(feed.postIds, allPosts);
-    final visibleStoryGroups = FeedResolver.resolveStoryGroups(feed.storyGroupIds, allStoryGroups);
+    final visibleStoryGroups = FeedResolver.resolveStoryGroups(
+      feed.storyGroupIds,
+      allStoryGroups,
+    );
 
     return Scaffold(
-      appBar: AppBar(title: Text(feed.name)),
-      body: ListView(
-        children: [
-          if (visibleStoryGroups.isNotEmpty)
-            SizedBox(
-              height: 116,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                children: [
-                  for (final storyGroup in visibleStoryGroups)
-                    StoryRing(
-                      name: storyGroup.ownerName,
-                      iconPath: storyGroup.ownerIconPath,
-                      onTap: () => Navigator.of(context).push<void>(
-                        MaterialPageRoute(
-                          builder: (_) => StoryPreviewScreen(storyGroupId: storyGroup.id),
+      appBar: AppBar(automaticallyImplyLeading: false),
+      body: GestureDetector(
+        onHorizontalDragEnd: (details) {
+          if ((details.primaryVelocity ?? 0) > 300) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: ListView(
+          children: [
+            if (visibleStoryGroups.isNotEmpty)
+              SizedBox(
+                height: 116,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  children: [
+                    for (final storyGroup in visibleStoryGroups)
+                      StoryRing(
+                        name: storyGroup.ownerName,
+                        iconPath: storyGroup.ownerIconPath,
+                        onTap: () => Navigator.of(context).push<void>(
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                StoryPreviewScreen(storyGroupId: storyGroup.id),
+                          ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          const Divider(height: 1),
-          for (final post in visiblePosts) _FeedPostTile(postId: post.id),
-        ],
+            const Divider(height: 1),
+            for (final post in visiblePosts) _FeedPostTile(postId: post.id),
+          ],
+        ),
       ),
     );
   }
@@ -78,7 +89,10 @@ class _FeedPostTile extends ConsumerWidget {
             children: [
               UserAvatar(iconPath: post.userIconPath, radius: 16),
               const SizedBox(width: 8),
-              Text(post.userName, style: const TextStyle(fontWeight: FontWeight.w600)),
+              Text(
+                post.userName,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
             ],
           ),
         ),
