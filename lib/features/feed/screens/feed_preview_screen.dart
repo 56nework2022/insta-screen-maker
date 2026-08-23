@@ -33,7 +33,7 @@ class FeedPreviewScreen extends ConsumerWidget {
         children: [
           if (visibleStoryGroups.isNotEmpty)
             SizedBox(
-              height: 96,
+              height: 116,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 8),

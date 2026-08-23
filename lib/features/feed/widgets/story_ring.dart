@@ -15,11 +15,11 @@ class StoryRing extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        width: 72,
+        width: 100,
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(3),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: AppColors.storyRingGradient,
@@ -27,7 +27,7 @@ class StoryRing extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(2),
                 decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-                child: UserAvatar(iconPath: iconPath, radius: 28),
+                child: UserAvatar(iconPath: iconPath, radius: 34),
               ),
             ),
             const SizedBox(height: 4),
@@ -35,7 +35,7 @@ class StoryRing extends StatelessWidget {
               name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 13),
             ),
           ],
         ),
