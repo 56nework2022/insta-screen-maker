@@ -121,12 +121,21 @@ class _PostEditScreenState extends ConsumerState<PostEditScreen> {
               ),
             ],
           ),
-          for (final comment in post.comments)
-            CommentTile(
-              comment: comment,
-              onEdit: () => _showCommentDialog(notifier, comment: comment),
-              onDelete: () => notifier.deleteComment(comment.id),
-            ),
+          ReorderableListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            onReorder: notifier.reorderComment,
+            children: [
+              for (final comment in post.comments)
+                CommentTile(
+                  key: ValueKey(comment.id),
+                  comment: comment,
+                  onEdit: () => _showCommentDialog(notifier, comment: comment),
+                  onDelete: () => notifier.deleteComment(comment.id),
+                  showDragHandle: true,
+                ),
+            ],
+          ),
         ],
       ),
     );

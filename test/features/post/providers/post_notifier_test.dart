@@ -86,6 +86,23 @@ void main() {
     expect(updated.comments.first.body, 'second');
   });
 
+  test('reorderCommentはReorderableListViewの規約通りに並び替える', () {
+    seedPost();
+    final notifier = container.read(postNotifierProvider('post-1').notifier);
+    notifier.addComment(userName: 'a', userIconPath: '', body: 'first');
+    notifier.addComment(userName: 'b', userIconPath: '', body: 'second');
+    notifier.addComment(userName: 'c', userIconPath: '', body: 'third');
+
+    notifier.reorderComment(0, 3);
+
+    final updated = container.read(postNotifierProvider('post-1'));
+    expect(updated.comments.map((c) => c.body), ['second', 'third', 'first']);
+    expect(
+      Hive.box<Post>(HiveBoxes.postBoxName).get('post-1')!.comments.map((c) => c.body),
+      ['second', 'third', 'first'],
+    );
+  });
+
   test('updateCaptionはキャプションを更新する', () {
     seedPost();
     final notifier = container.read(postNotifierProvider('post-1').notifier);

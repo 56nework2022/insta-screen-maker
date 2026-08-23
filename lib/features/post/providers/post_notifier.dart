@@ -59,6 +59,16 @@ class PostNotifier extends FamilyNotifier<Post, String> {
     final comments = state.comments.where((c) => c.id != commentId).toList();
     _update(state.copyWith(comments: comments));
   }
+
+  /// [oldIndex]/[newIndex]は`ReorderableListView.onReorder`の仕様に合わせる。
+  void reorderComment(int oldIndex, int newIndex) {
+    var targetIndex = newIndex;
+    if (oldIndex < newIndex) targetIndex -= 1;
+    final comments = [...state.comments];
+    final moved = comments.removeAt(oldIndex);
+    comments.insert(targetIndex, moved);
+    _update(state.copyWith(comments: comments));
+  }
 }
 
 final postNotifierProvider = NotifierProvider.family<PostNotifier, Post, String>(

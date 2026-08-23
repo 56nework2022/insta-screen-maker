@@ -10,11 +10,13 @@ class CommentTile extends StatelessWidget {
     required this.comment,
     this.onEdit,
     this.onDelete,
+    this.showDragHandle = false,
   });
 
   final Comment comment;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+  final bool showDragHandle;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CommentTile extends StatelessWidget {
           ],
         ),
       ),
-      trailing: onEdit == null && onDelete == null
+      trailing: onEdit == null && onDelete == null && !showDragHandle
           ? null
           : Row(
               mainAxisSize: MainAxisSize.min,
@@ -50,6 +52,7 @@ class CommentTile extends StatelessWidget {
                       if (confirmed) onDelete!();
                     },
                   ),
+                if (showDragHandle) const Icon(Icons.drag_handle, size: 18),
               ],
             ),
     );
