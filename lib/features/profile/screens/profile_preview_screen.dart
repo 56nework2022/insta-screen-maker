@@ -21,7 +21,13 @@ class ProfilePreviewScreen extends ConsumerWidget {
     final followingCount = profile.followingCount;
 
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          profile.name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+      ),
       body: GestureDetector(
         onHorizontalDragEnd: (details) {
           if ((details.primaryVelocity ?? 0) > 300) {
