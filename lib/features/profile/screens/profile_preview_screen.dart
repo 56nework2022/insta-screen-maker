@@ -27,6 +27,16 @@ class ProfilePreviewScreen extends ConsumerWidget {
           profile.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
+        actions: [
+          PopupMenuButton<void>(
+            itemBuilder: (context) => [
+              PopupMenuItem<void>(
+                onTap: () => Navigator.of(context).pop(),
+                child: const Text('編集に戻る'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: GestureDetector(
         onHorizontalDragEnd: (details) {

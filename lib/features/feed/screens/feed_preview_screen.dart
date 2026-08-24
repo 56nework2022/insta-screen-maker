@@ -31,7 +31,19 @@ class FeedPreviewScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          PopupMenuButton<void>(
+            itemBuilder: (context) => [
+              PopupMenuItem<void>(
+                onTap: () => Navigator.of(context).pop(),
+                child: const Text('編集に戻る'),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: GestureDetector(
         onHorizontalDragEnd: (details) {
           if ((details.primaryVelocity ?? 0) > 300) {

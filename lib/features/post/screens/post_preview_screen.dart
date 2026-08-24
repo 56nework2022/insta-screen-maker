@@ -46,7 +46,16 @@ class _PostPreviewScreenState extends ConsumerState<PostPreviewScreen> {
             ),
           ],
         ),
-        actions: const [Icon(Icons.more_vert), SizedBox(width: 12)],
+        actions: [
+          PopupMenuButton<void>(
+            itemBuilder: (context) => [
+              PopupMenuItem<void>(
+                onTap: () => Navigator.of(context).pop(),
+                child: const Text('編集に戻る'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: GestureDetector(
         onHorizontalDragEnd: (details) {
