@@ -10,17 +10,15 @@
 
 未実施の場合は、先に上記リンク先の手順1〜4を行ってください。
 
-## 1. App Bundleの用意(2通りの方法)
+## 1. App Bundleの用意
 
-### 方法A: 既存ビルドをライブラリから使い回す(推奨)
-内部テストで既にアップロード・動作確認済みのAAB(例: versionCode 14)は、Play Console上のアプリのライブラリに保持されている。再ビルド・再アップロードせずに、クローズドテストのリリース作成画面で「ライブラリから追加」を選び、同じビルドを選択するだけでよい。この場合、`pubspec.yaml` の更新やローカルでの再ビルドは不要。
+`android/app/src/main/AndroidManifest.xml` から不要な `READ_MEDIA_IMAGES` / `READ_EXTERNAL_STORAGE` 権限を削除し、`pubspec.yaml` を `1.0.0+15` にバンプ済み(`.steering/20260824-remove-unused-media-permissions/`、コミット `de34557` / `546df58`)。versionCode 14のビルドはこの権限問題が残ったままなので**ライブラリからの使い回しはせず**、以下の手順で新規ビルドをアップロードする。
 
-### 方法B: 新しいビルドをアップロードする
-新しい変更を反映した最新ビルドを使いたい場合は、以下の手順で新規ビルドを用意する。
+1. `git pull` で最新(`546df58`以降)を取得する
+2. `flutter build appbundle --release` を実行し、AABを生成する(versionCode 15)
+3. 生成されたAABをクローズドテストにアップロードすることで、Play Consoleの権限警告も同時に解消される想定
 
-1. Play Console の対象アプリ →「リリース」→「リリース履歴」で、直近使用済みのversionCodeを確認する(pubspec.yaml上の数値をそのまま信用しない — internal-testingで「既に使用されています」エラーが繰り返し発生した実績があるため)
-2. `pubspec.yaml` の `version:` を `1.0.0+<次のversionCode>` に更新する
-3. `flutter build appbundle --release` を実行し、AABを再生成する
+※以降さらに新しいビルドが必要になった場合は、Play Console の「リリース履歴」で直近使用済みのversionCodeを確認してから `pubspec.yaml` をバンプすること(pubspec.yaml上の数値をそのまま信用しない — internal-testingで「既に使用されています」エラーが繰り返し発生した実績があるため)。
 
 ## 2. クローズドテストトラックの作成
 
